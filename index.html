@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Case Converter</title>
+</head>
+<body>
+<div class="title"><h1>Case Converter</h1></div>
+<link rel="stylesheet" href="index.css">
+<div class="text">
+    <label for="text-area"></label><textarea id="text-area"></textarea>
+</div>
+<div class="buttons">
+    <button id="upper-case">Upper Case</button>
+    <button id="lower-case">Lower Case</button>
+    <button id="proper-case">Proper Case</button>
+    <button id="sentence-case">Sentence Case</button>
+    <button id="save-text-file">Save text file</button>
+</div>
+<script>
+    // Get references to elements
+    const textArea = document.getElementById("text-area");
+    const upperCaseBtn = document.getElementById("upper-case");
+    const lowerCaseBtn = document.getElementById("lower-case");
+    const properCaseBtn = document.getElementById("proper-case");
+    const sentenceCaseBtn = document.getElementById("sentence-case");
+    const saveTextFile = document.getElementById("save-text-file");
+
+    // Add event listeners to buttons
+    upperCaseBtn.addEventListener("click", function () {
+        textArea.value = textArea.value.toUpperCase();
+    });
+
+    lowerCaseBtn.addEventListener("click", function () {
+        textArea.value = textArea.value.toLowerCase();
+    });
+
+    properCaseBtn.addEventListener("click", function () {
+        const text = document.getElementById("text-area").value;
+        const words = text.split(" ");
+        for (let i = 0; i < words.length; i++) {
+            if (i === 0) {
+                words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1);
+            } else {
+                words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1).toLowerCase();
+            }
+        }
+        document.getElementById("text-area").value = words.join(" ");
+    });
+
+    sentenceCaseBtn.addEventListener("click", function () {
+        textArea.value = textArea.value.toLowerCase();
+        textArea.value = textArea.value.replace(/(^\w|\.\s*\w)/gi, function (txt) {
+            return txt.toUpperCase();
+        });
+    });
+    saveTextFile.addEventListener("click", function () {
+        const text = document.getElementById("text-area").value;
+        const filename = "text.txt";
+
+        download(filename, text);
+    });
+
+    function download(filename, text) {
+        let element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+        element.setAttribute('download', filename);
+
+        element.style.display = 'none';
+        document.body.appendChild(element);
+
+        element.click();
+
+        document.body.removeChild(element);
+    }
+</script>
+
+</body>
+</html>
